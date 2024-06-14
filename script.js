@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const popupOverlay = document.getElementById('popupOverlay');
     const board = document.getElementById('board');
     const cells = Array.from(document.querySelectorAll('.cell'));
     const gameStatus = document.getElementById('game-status');
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         [2, 4, 6],
     ];
 
+    // Function for checking if the player has won the game
     function checkWin() {
         for (let i = 0; i < winningConditions.length; i++) {
             const [a, b, c] = winningConditions[i];
@@ -28,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     }
 
+    // Checking if there is a draw
     function checkDraw() {
         return boardState.every(cell => cell);
     }
@@ -54,8 +57,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+
+        if (currentPlayer === 'O') {
+            setTimeout(computerMove, 5000); // 5 seconds delay
+        }
     }
 
+    function computerMove() {
+        if (!gameActive) return;
+
+        let availableIndices = [];
+        boardState.forEach((cell, index) => {
+            if (cell === '') availableIndices.push(index);
+        });
+
+        const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+        boardState[randomIndex] = currentPlayer;
+        cells[randomIndex].textContent = currentPlayer;
+
+        if (checkWin()) {
+            gameStatus.textContent = `Player ${currentPlayer} Wins!`;
+            gameActive = false;
+            return;
+        }
+
+        if (checkDraw()) {
+            gameStatus.textContent = 'Draw!';
+            gameActive = false;
+            return;
+        }
+
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    }
+
+    // Function to reset the game
     function resetGame() {
         currentPlayer = 'X';
         gameActive = true;
@@ -71,4 +106,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     resetBtn.addEventListener('click', resetGame);
+
+    window.submitForm = function() {
+        const difficultySelect = document.getElementById('difficultySelect').value;
+        const playAsSelect = document.getElementById('playAsSelect').value;
+        currentPlayer = playAsSelect;
+        popupOverlay.style.display = 'none';
+        gameContainer.style.display = 'block';
+        if (currentPlayer === 'O') {
+            setTimeout(computerMove, 5000); // Computer starts if 'O' is selected
+        }
+    }
 });

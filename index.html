@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe</title>
     <link rel="stylesheet" href="style.css">
+    <title>Tic-Tac-Toe</title>
 </head>
 <body>
     <div class="container">
         <h1>Tic-Tac-Toe</h1>
-        <div id="game-status"></div>
-        <div id="board">
+        <div id="board" class="board">
             <div class="cell" data-index="0"></div>
             <div class="cell" data-index="1"></div>
             <div class="cell" data-index="2"></div>
@@ -21,7 +20,36 @@
             <div class="cell" data-index="7"></div>
             <div class="cell" data-index="8"></div>
         </div>
+        <div id="game-status" class="game-status"></div>
         <button id="reset-btn">Reset</button>
+
+
+        <!-- popup Section -->
+        <div class="popup-overlay" id="popupOverlay">
+
+            <div class="popup" id="popup">
+        
+                <div class="popup-content">
+        
+                    <p>How would you like to play?</p>
+        
+                    <p>Difficulty:</p>
+                    <select id="difficultySelect">
+                        <option value="easy">Easy</option>
+                        <option value="hard">Hard</option>
+                    </select>
+        
+                    <p>Play as:</p>
+                    <select id="playAsSelect">
+                        <option value="X">X (Go first)</option>
+                        <option value="O">O</option>
+                    </select>
+        
+                </div>
+                <button onclick="submitForm()">Play</button>
+            </div>
+        
+        </div> 
     </div>
     <script src="script.js"></script>
 </body>
